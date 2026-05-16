@@ -1,3 +1,4 @@
+import 'package:destini_challenge_app/story_brain.dart';
 import 'package:flutter/material.dart';
 
 //TODO: Step 15 - Run the app and see if you can see the screen update with the first story. Delete this TODO if it looks as you expected.
@@ -14,6 +15,7 @@ class Destini extends StatelessWidget {
 }
 
 //TODO: Step 9 - Create a new storyBrain object from the StoryBrain class.
+StoryBrain storyBrainObject = StoryBrain();
 
 class StoryPage extends StatefulWidget {
   _StoryPageState createState() => _StoryPageState();
@@ -25,6 +27,12 @@ class _StoryPageState extends State<StoryPage> {
     return Scaffold(
       body: Container(
         //TODO: Step 1 - Add background.png to this Container as a background image.
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 15.0),
         constraints: BoxConstraints.expand(),
         child: SafeArea(
@@ -36,7 +44,7 @@ class _StoryPageState extends State<StoryPage> {
                 child: Center(
                   child: Text(
                     //TODO: Step 10 - use the storyBrain to get the first story title and display it in this Text Widget.
-                    'Story text will go here.',
+                    storyBrainObject.getStory(),
                     style: TextStyle(
                       fontSize: 25.0,
                     ),
@@ -52,10 +60,13 @@ class _StoryPageState extends State<StoryPage> {
                   onPressed: () {
                     //Choice 1 made by user.
                     //TODO: Step 18 - Call the nextStory() method from storyBrain and pass the number 1 as the choice made by the user.
+                    setState(() {
+                      storyBrainObject.nextStory(1);
+                    });
                   },
                   child: Text(
                     //TODO: Step 13 - Use the storyBrain to get the text for choice 1.
-                    'Choice 1',
+                    storyBrainObject.getChoice1(),
                     style: TextStyle(
                       fontSize: 20.0,
                     ),
@@ -69,17 +80,26 @@ class _StoryPageState extends State<StoryPage> {
                 flex: 2,
                 //TODO: Step 26 - Use a Flutter Visibility Widget to wrap this FlatButton.
                 //TODO: Step 28 - Set the "visible" property of the Visibility Widget to equal the output from the buttonShouldBeVisible() method in the storyBrain.
-                child: TextButton(
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
-                  onPressed: () {
-                    //Choice 2 made by user.
-                    //TODO: Step 19 - Call the nextStory() method from storyBrain and pass the number 2 as the choice made by the user.
-                  },
-                  child: Text(
-                    //TODO: Step 14 - Use the storyBrain to get the text for choice 2.
-                    'Choice 2',
-                    style: TextStyle(
-                      fontSize: 20.0,
+                child: Visibility(
+                  visible: storyBrainObject.buttonShouldBeVisible(),
+                  child: Visibility(
+                    visible: storyBrainObject.buttonShouldBeVisible(),
+                    child: TextButton(
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                      onPressed: () {
+                        //Choice 2 made by user.
+                        //TODO: Step 19 - Call the nextStory() method from storyBrain and pass the number 2 as the choice made by the user.
+                        setState(() {
+                          storyBrainObject.nextStory(2);
+                        });
+                      },
+                      child: Text(
+                        //TODO: Step 14 - Use the storyBrain to get the text for choice 2.
+                        storyBrainObject.getChoice2(),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                        ),
+                      ),
                     ),
                   ),
                 ),
